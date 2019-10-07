@@ -1,8 +1,8 @@
-.hex
-.obj
-.tmp
-.bat
-.map
-.aws
-.aps
+*.hex
+*.obj
+*.tmp
+*.bat
+*.map
+*.aws
+*.aps
 .vscode
