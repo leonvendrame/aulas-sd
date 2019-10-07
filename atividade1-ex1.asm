@@ -7,34 +7,39 @@
 .EQU LED4 = PB4
 
 START:
-	SBI DDRB, LED0
-	SBI	DDRB, LED1
-	SBI DDRB, LED2
-	SBI DDRB, LED3
-	SBI DDRB, LED4
+    IN R16, DDRB
+    ORI R16, 0b00011111
+    OUT DDRB, R16
+	; SBI DDRB, LED0
+	; SBI DDRB, LED1
+	; SBI DDRB, LED2
+	; SBI DDRB, LED3
+	; SBI DDRB, LED4
 
 MAIN:
-	RCALL DELAY
-    INC R18
-    CPI R18, 32
-    BREQ CLEAR
-    RETURN:
+    CLEAR:
+        LDI R18, 0
         IN R16, PORTB
-        LDI R17, 0xE0
-        AND R17, R16
-        OR  R17, R18
-        OUT PORTB, R17
-		RJMP MAIN
-
-CLEAR:
-    LDI R18, 0
-    RJMP RETURN
+        ANDI R16, 0xE0
+        OUT PORTB, R16
+	INCREMENT:
+        RCALL DELAY
+        INC R18
+        CPI R18, 32
+        BREQ CLEAR
+        IN R16, PORTB
+        ANDI R16, 0xE0
+        OR  R16, R18
+        OUT PORTB, R16
+        RJMP INCREMENT
 
 DELAY:
-    LDI R16, 83
+    LDI R16, 83 ; 83 = ~996ms
     DELAY_LOOP:
         DEC R0
-        RJMP DELAY_LOOP
+        BRNE DELAY_LOOP
         DEC R1
-        RJMP DELAY_LOOP
+        BRNE DELAY_LOOP
+        DEC R16
+        BRNE DELAY_LOOP
     RET
