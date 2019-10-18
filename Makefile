@@ -61,3 +61,6 @@ clean_all:
 
 assembler:
 	$(ASMBLER) $(PROG).asm
+
+upload:
+	avrdude -C $(AVRDUDE_CONF) -p $(MCU_TARGET) -c $(UPLOAD_PROTOCOL) -P $(PORT) -b $(UPLOAD_SPEED) -D -U flash:w:$(PROG).hex:i -U eeprom:w:$(PROG).eep.hex:i

@@ -10,11 +10,6 @@ START:
     IN R16, DDRB
     ORI R16, 0b00011111
     OUT DDRB, R16
-	; SBI DDRB, LED0
-	; SBI DDRB, LED1
-	; SBI DDRB, LED2
-	; SBI DDRB, LED3
-	; SBI DDRB, LED4
 
 MAIN:
     CLEAR:
@@ -34,7 +29,7 @@ MAIN:
         RJMP INCREMENT
 
 DELAY:
-    LDI R16, 83 ; 83 = ~996ms
+    LDI R16, 82 ; 82 = ~996ms
     DELAY_LOOP:
         DEC R0
         BRNE DELAY_LOOP
