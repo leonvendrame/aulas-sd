@@ -57,7 +57,7 @@ clean:
 	@rm -f $(PROG).elf $(PROG).eep.hex $(PROG).hex $(OBJS)
 
 clean_all:
-	@rm -f *.elf *.hex *.obj
+	@rm -f *.elf *.hex *.obj *.o
 
 assembler:
 	$(ASMBLER) $(PROG).asm

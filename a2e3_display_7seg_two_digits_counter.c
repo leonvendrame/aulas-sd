@@ -74,21 +74,25 @@ int main() {
   
     while (1) {
         if (!tst_bit(PINB, 3)) {
+			_delay_ms(12);
           	count++;
 
 			prepare_digits(count, digits, display_map);
 			display_two_digits(digits);
 
           	while (!tst_bit(PINB, 3)) {}
+			_delay_ms(24);
         }
 
 		if (!tst_bit(PINB, 4)) {
+			_delay_ms(12);
 			count--;
 
 			prepare_digits(count, digits, display_map);
 			display_two_digits(digits);
 
 			while (!tst_bit(PINB, 4)) {}
+			_delay_ms(24);
 		}
     }
 

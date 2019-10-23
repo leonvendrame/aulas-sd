@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
+#include <util/delay.h>
 
 #define set_bit(Y, bit_x) (Y |= (1 << bit_x))
 #define clr_bit(Y, bit_x) (Y &= ~(1 << bit_x))
@@ -44,19 +45,23 @@ int main() {
   
     while (1) {
         if (!tst_bit(PINB, 3)) {
+			_delay_ms(12);
           	if (count >= 15) count = 0; else count++;
 
 			display_single_digit(pgm_read_byte(&display_map[count]));
 
           	while (!tst_bit(PINB, 3)) {}
+			_delay_ms(24);
         }
 
 		if (!tst_bit(PINB, 4)) {
+			_delay_ms(12);
 			if (count == 0) count = 15; else count--;
 
 			display_single_digit(pgm_read_byte(&display_map[count]));
 
 			while (!tst_bit(PINB, 4)) {}
+			_delay_ms(24);
 		}
     }
 

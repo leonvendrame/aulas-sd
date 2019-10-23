@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include <util/delay.h>
 
 #define set_bit(Y, bit_x) (Y |= (1 << bit_x))
 #define clr_bit(Y, bit_x) (Y &= ~(1 << bit_x))
@@ -22,15 +23,12 @@ void display_single_digit(uint8_t digit) {
 
 int main() {
 	uint8_t count = 0;
-	uint8_t display_map[16] = {
+	uint8_t display_map[10] = {
 		0b00000001,	0b01001111,
 		0b00010010,	0b00000110,
 		0b01001100,	0b00100100,
 		0b00100000,	0b00001111,
-		0b00000000,	0b00000100,
-		0b00001000,	0b01100000,
-		0b00110001,	0b01000010,
-		0b00110000,	0b00111000
+		0b00000000,	0b00000100
 	};
 
     DDRB |= mask_port_b;
@@ -39,16 +37,21 @@ int main() {
   	clr_bit(DDRB, 3);
   	set_bit(PORTB, 3);
   	
-	display_single_digit(display_map[count]);
+	display_single_digit(0b01111111);
   
     while (1) {
-        if (!tst_bit(PINB, 3)) {
-          	if (count >= 15) count = 0; else count++;
+		while (tst_bit(PINB, 3)) {
+			count++;
+		}
+		if (!tst_bit(PINB, 3)) {
+			_delay_ms(12);
+			count = count % 10;
 
 			display_single_digit(display_map[count]);
 
-          	while (!tst_bit(PINB, 3)) {}
-        }
+			while (!tst_bit(PINB, 3)) {}
+			_delay_ms(24);
+		}
     }
 
     return 0;
