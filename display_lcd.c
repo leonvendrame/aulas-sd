@@ -118,7 +118,9 @@ int main() {
   	PORTB &= 0b11000000;
 
     initialize();
-  	display_str("Leonardo Vendrame");
+  	display_str("Leonardo\nVendrame");
     while (1) {
     }
+
+    return 0;
 }
