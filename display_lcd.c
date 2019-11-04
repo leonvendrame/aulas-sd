@@ -1,13 +1,19 @@
-#include <avr/io.h>
 #include <util/delay.h>
+#include <display_lcd.h>
 #define set_bit(Y, bit_x) (Y |= (1 << bit_x))
 #define clr_bit(Y, bit_x) (Y &= ~(1 << bit_x))
 #define tst_bit(Y, bit_x) (Y &= (1 << bit_x))
-#define ENABLE_PIN PB4
-#define REGISTER_SELECT_PIN PB5
-#define LCD_PORT PORTB
-#define LCD_PORT_MASK 0b00001111
-#define PINS_MASK 0b00110000
+
+void enable() {
+    clr_bit(LCD_PORT, ENABLE_PIN);
+    _delay_us(1);
+    set_bit(LCD_PORT, ENABLE_PIN);
+    _delay_us(1);
+    clr_bit(LCD_PORT, ENABLE_PIN);
+    _delay_us(45);
+
+    return;
+}
 
 void write4bits(uint8_t data) {
     uint8_t aux;
@@ -28,7 +34,6 @@ void send(uint8_t data, uint8_t kind) {
     } else {
         clr_bit(LCD_PORT, REGISTER_SELECT_PIN);
     }
-  	uint8_t aux = data >> 4;
     write4bits(data >> 4);
     write4bits(data &= 0b00001111);
 
@@ -42,31 +47,6 @@ void send_data(uint8_t data) {
     send(data, 1);
 }
 
-void enable() {
-    clr_bit(LCD_PORT, ENABLE_PIN);
-    _delay_us(1);
-    set_bit(LCD_PORT, ENABLE_PIN);
-    _delay_us(1);
-    clr_bit(LCD_PORT, ENABLE_PIN);
-    _delay_us(45);
-
-    return;
-}
-
-void initialize() {
-    _delay_ms(50);
-    for (uint8_t i = 0; i < 3; i++) {
-        write4bits(0x03);
-        _delay_ms(5);
-    }
-    write4bits(0x02);
-    send_command(0x28);
-    display_off();
-    clear_display();
-    display_on();
-    send_command(0x06);
-}
-
 void clear_display() {
     send_command(0x01);
     _delay_ms(2);
@@ -78,14 +58,6 @@ void display_on() {
 
 void display_off() {
     send_command(0x08);
-}
-
-void display_num(uint8_t num) {
-    send_data(num);
-}
-
-void cursor_on() {
-    send_command(0x0E);
 }
 
 void set_cursor(uint8_t row, uint8_t col) {
@@ -113,14 +85,29 @@ void display_str(char* message) {
     }
 }
 
-int main() {
-    DDRB |= 0b00111111;
-  	PORTB &= 0b11000000;
+void display_num(uint8_t num) {
+  	char *str = "000";
+  	sprintf(str, "%d", num);
+    display_str(str);
+}
 
-    initialize();
-  	display_str("Leonardo\nVendrame");
-    while (1) {
+void initialize_display() {
+    _delay_ms(50);
+    for (uint8_t i = 0; i < 3; i++) {
+        write4bits(0x03);
+        _delay_ms(5);
     }
+    write4bits(0x02);
+    send_command(0x28);
+    display_off();
+    clear_display();
+    display_on();
+    send_command(0x06);
+}
 
-    return 0;
+void setup_display() {
+    LCD_DDR |= LCD_PORT_MASK;
+    set_bit(LCD_DDR, ENABLE_PIN);
+    set_bit(LCD_DDR, REGISTER_SELECT_PIN);
+
 }
