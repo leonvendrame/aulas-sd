@@ -20,7 +20,7 @@ void write4bits(uint8_t data) {
 
     aux = LCD_PORT;
     aux &= ~(LCD_PORT_MASK);
-  	data &= LCD_PORT_MASK;
+    data &= LCD_PORT_MASK;
     aux |= data;
     LCD_PORT = aux;
     enable();
@@ -74,7 +74,7 @@ void set_cursor(uint8_t row, uint8_t col) {
 }
 
 void display_str(char* message) {
-	uint8_t length = 0;
+    uint8_t length = 0;
     while (message[length] != '\0') {
         if (message[length] == '\n') {
             set_cursor(2, 1);
@@ -86,8 +86,8 @@ void display_str(char* message) {
 }
 
 void display_num(uint8_t num) {
-  	char *str = "000";
-  	sprintf(str, "%d", num);
+    char *str = "000";
+    sprintf(str, "%d", num);
     display_str(str);
 }
 
@@ -109,5 +109,4 @@ void setup_display() {
     LCD_DDR |= LCD_PORT_MASK;
     set_bit(LCD_DDR, ENABLE_PIN);
     set_bit(LCD_DDR, REGISTER_SELECT_PIN);
-
 }

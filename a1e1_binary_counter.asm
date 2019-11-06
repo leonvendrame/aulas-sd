@@ -17,7 +17,7 @@ MAIN:
         IN R16, PORTB
         ANDI R16, 0xE0
         OUT PORTB, R16
-	INCREMENT:
+    INCREMENT:
         RCALL DELAY
         INC R18
         CPI R18, 32
