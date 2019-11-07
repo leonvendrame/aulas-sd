@@ -2,7 +2,7 @@
 #include <temp_sensor_dht11.h>
 #define set_bit(Y, bit_x) (Y |= (1 << bit_x))
 #define clr_bit(Y, bit_x) (Y &= ~(1 << bit_x))
-#define tst_bit(Y, bit_x) ((Y &= (1 << bit_x)) >> bit_x)
+#define tst_bit(Y, bit_x) ((Y & (1 << bit_x)) >> bit_x)
 #define HIGH 1
 #define LOW 0
 

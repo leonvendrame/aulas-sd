@@ -2,7 +2,7 @@
 #include <display_lcd.h>
 #define set_bit(Y, bit_x) (Y |= (1 << bit_x))
 #define clr_bit(Y, bit_x) (Y &= ~(1 << bit_x))
-#define tst_bit(Y, bit_x) (Y &= (1 << bit_x))
+#define tst_bit(Y, bit_x) (Y & (1 << bit_x))
 
 void enable() {
     clr_bit(LCD_PORT, ENABLE_PIN);
