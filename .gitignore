@@ -6,4 +6,5 @@
 *.aws
 *.aps
 *.o
+*.elf
 .vscode

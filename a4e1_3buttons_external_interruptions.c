@@ -5,6 +5,7 @@
 #define set_bit(Y, bit_x) (Y |= (1 << bit_x))
 #define clr_bit(Y, bit_x) (Y &= ~(1 << bit_x))
 #define tst_bit(Y, bit_x) (Y & (1 << bit_x))
+#define cpl_bit(Y, bit_x) (Y ^= (1 << bit_x))
 
 #define LEDS_DDR DDRD
 #define LEDS_PORT PORTD
@@ -27,34 +28,22 @@
 
 ISR(PCINT2_vect) {
     if (!tst_bit(BTNS_PIN, BTN0)) {
-        if (!tst_bit(LEDS_PORT, LED0)) {
-            set_bit(LEDS_PORT, LED0);
-        } else {
-            clr_bit(LEDS_PORT, LED0);
-        }
+        cpl_bit(LEDS_PORT, LED0);
     } else if (!tst_bit(BTNS_PIN, BTN1)) {
-        if (!tst_bit(LEDS_PORT, LED1)) {
-            set_bit(LEDS_PORT, LED1);
-        } else {
-            clr_bit(LEDS_PORT, LED1);
-        }
+        cpl_bit(LEDS_PORT, LED1);
     } else if (!tst_bit(BTNS_PIN, BTN2)) {
-        if (!tst_bit(LEDS_PORT, LED2)) {
-            set_bit(LEDS_PORT, LED2);
-        } else {
-            clr_bit(LEDS_PORT, LED2);
-        }
+        cpl_bit(LEDS_PORT, LED2);
     }
 
     _delay_ms(15);
 }
 
 int main() {
-    BTNS_DDR &= 0xE3;
-    BTNS_PORT |= 0x1C;
+    BTNS_DDR &= (~(1 << BTN0) & ~(1 << BTN1) & ~(1 << BTN2));
+    BTNS_PORT |= ((1 << BTN0) | (1 << BTN1) | (1 << BTN2));
 
-    LEDS_DDR |= 0xE0;
-    LEDS_PORT &= 0x1F;
+    LEDS_DDR |= ((1 << LED0) | (1 << LED1) | (1 << LED2));
+    LEDS_PORT &= (~(1 << LED0) & ~(1 << LED1) & ~(1 << LED2));
 
     PCICR = 1 << PCIE2;
 

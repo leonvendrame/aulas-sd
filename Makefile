@@ -2,7 +2,7 @@
 PROG = main
 
 # Defina uma variável DEPS com a lista das dependências .c (sem a extensão)
-DEPS = display_lcd temp_sensor_dht11
+# DEPS = display_lcd temp_sensor_dht11
 
 # Porta de comunicação com o Arduino
 PORT = /dev/ttyACM0
