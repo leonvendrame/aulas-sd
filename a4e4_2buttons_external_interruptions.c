@@ -19,9 +19,6 @@
 #define BTN1 PD2
 #define BTN2 PD3
 
-// #define INT_BTN0 PCINT18
-// #define INT_BTN1 PCINT19
-
 ISR(INT1_vect) {
     for (uint8_t i = 0; i < 12; i++) {
         cpl_bit(LEDS_PORT, LED0);
