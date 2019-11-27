@@ -1,10 +1,11 @@
 #include <avr/io.h>
 
-#define ENABLE_PIN PB4
-#define REGISTER_SELECT_PIN PB5
-#define LCD_PORT PORTB
-#define LCD_DDR DDRB
-#define LCD_PORT_MASK 0b00001111
+#define ENABLE_PIN PD3
+#define REGISTER_SELECT_PIN PD2
+#define LCD_PORT PORTD
+#define LCD_DDR DDRD
+#define LCD_PORT_MASK 0xF0
+#define LCD_LSB_LITTLE_ENDIAN 4
 
 void enable();
 

@@ -1,8 +1,8 @@
 #include <avr/io.h>
-#define SENSOR_IO_PIN PD2
-#define SENSOR_PIN PIND
-#define SENSOR_PORT PORTD
-#define SENSOR_DDR DDRD
+#define SENSOR_IO_PIN PB0
+#define SENSOR_PIN PINB
+#define SENSOR_PORT PORTB
+#define SENSOR_DDR DDRB
 
 uint16_t expect_pulse(uint8_t level);
 

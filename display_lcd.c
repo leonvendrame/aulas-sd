@@ -11,21 +11,16 @@ void enable() {
     _delay_us(1);
     clr_bit(LCD_PORT, ENABLE_PIN);
     _delay_us(45);
-
-    return;
 }
 
 void write4bits(uint8_t data) {
-    uint8_t aux;
-
-    aux = LCD_PORT;
+    uint8_t aux = LCD_PORT;
     aux &= ~(LCD_PORT_MASK);
+    data <<= LCD_LSB_LITTLE_ENDIAN;
     data &= LCD_PORT_MASK;
     aux |= data;
     LCD_PORT = aux;
     enable();
-
-    return;
 }
 
 void send(uint8_t data, uint8_t kind) {
@@ -35,8 +30,7 @@ void send(uint8_t data, uint8_t kind) {
         clr_bit(LCD_PORT, REGISTER_SELECT_PIN);
     }
     write4bits(data >> 4);
-    write4bits(data &= 0b00001111);
-
+    write4bits(data & 0x0F);
 }
 
 void send_command(uint8_t cmd) {
@@ -86,8 +80,12 @@ void display_str(char* message) {
 }
 
 void display_num(uint8_t num) {
-    char *str = "000";
-    sprintf(str, "%d", num);
+    char *str = "00";
+    if (num < 10) {
+        sprintf(str, "0%d", num)
+    } else {
+        sprintf(str, "%d", num);
+    }
     display_str(str);
 }
 
