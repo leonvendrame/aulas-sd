@@ -20,6 +20,15 @@ uint8_t cents = 0;
 uint8_t seconds = 0;
 uint8_t minutes = 0;
 
+void display_time(uint8_t minutes, uint8_t seconds, uint8_t cents) {
+    set_cursor(1, 4);
+    display_num(minutes);
+    display_str(":");
+    display_num(seconds);
+    display_str(":");
+    display_num(cents);
+}
+
 ISR(TIMER1_COMPA_vect) {
     ++cents;
     if (cents == 100) {
@@ -51,15 +60,6 @@ ISR(PCINT0_vect) {
             TCCR1B |= 1 << CS12;
         }
     }
-}
-
-void display_time(uint8_t minutes, uint8_t seconds, uint8_t cents) {
-    set_cursor(1, 4);
-    display_num(minutes);
-    display_str(":");
-    display_num(seconds);
-    display_str(":");
-    display_num(cents);
 }
 
 void setup_buttons() {

@@ -1,5 +1,6 @@
 #include <util/delay.h>
 #include <display_lcd.h>
+#include <stdio.h>
 #define set_bit(Y, bit_x) (Y |= (1 << bit_x))
 #define clr_bit(Y, bit_x) (Y &= ~(1 << bit_x))
 #define tst_bit(Y, bit_x) (Y & (1 << bit_x))
@@ -82,7 +83,7 @@ void display_str(char* message) {
 void display_num(uint8_t num) {
     char *str = "00";
     if (num < 10) {
-        sprintf(str, "0%d", num)
+        sprintf(str, "0%d", num);
     } else {
         sprintf(str, "%d", num);
     }
