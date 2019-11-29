@@ -81,7 +81,7 @@ void display_str(char* message) {
 }
 
 void display_num(uint8_t num) {
-    char *str = "00";
+    char *str = "000";
     if (num < 10) {
         sprintf(str, "0%d", num);
     } else {

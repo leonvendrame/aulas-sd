@@ -14,14 +14,13 @@
 #define BTNS_PORT PORTB
 #define BTNS_PIN PINB
 
-uint8_t stopped = 1;
-uint8_t milis = 0;
-uint8_t cents = 0;
-uint8_t seconds = 0;
-uint8_t minutes = 0;
+volatile uint8_t stopped = 1;
+volatile uint8_t cents = 0;
+volatile uint8_t seconds = 0;
+volatile uint8_t minutes = 0;
 
 void display_time(uint8_t minutes, uint8_t seconds, uint8_t cents) {
-    set_cursor(1, 4);
+    set_cursor(1, 5);
     display_num(minutes);
     display_str(":");
     display_num(seconds);
@@ -45,17 +44,17 @@ ISR(TIMER1_COMPA_vect) {
 }
 
 ISR(PCINT0_vect) {
-    if (!tst_bit(BTNS_PIN, BTN0)) {
+    if (!tst_bit(BTNS_PIN, BTN1)) {
         cents = 0;
         seconds = 0;
         minutes = 0;
         if (stopped) {
             display_time(minutes, seconds, cents);
         }
-    } else if (!tst_bit(BTNS_PIN, BTN1)) {
+    } else if (!tst_bit(BTNS_PIN, BTN0)) {
         stopped = !stopped;
         if (stopped) {
-            TCCR1B &= ~(1 << CS12);
+            TCCR1B &= (~(1 << CS12));
         } else {
             TCCR1B |= 1 << CS12;
         }
@@ -63,9 +62,10 @@ ISR(PCINT0_vect) {
 }
 
 void setup_buttons() {
-    BTNS_DDR &= (~(1 << BTN0) & ~(1 << BTN1));
+    BTNS_DDR &= ~((1 << BTN0) | (1 << BTN1));
     BTNS_PORT |= ((1 << BTN0) | (1 << BTN1));
     PCICR = 1 << PCIE0;
+    PCIFR = 1 << PCIF0;
     PCMSK0 = ((1 << PCINT1) | (1 << PCINT0));
 }
 
@@ -79,16 +79,16 @@ int main() {
     setup_display();
     setup_buttons();
     setup_timer_counter_1();
-    
+
     initialize_display();
     display_time(minutes, seconds, cents);
-    
+
     sei();
 
     while (1) {
         while (stopped);
         display_time(minutes, seconds, cents);
     }
-    
+
     return 0;
 }
