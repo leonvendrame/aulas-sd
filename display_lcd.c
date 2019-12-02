@@ -80,9 +80,11 @@ void display_str(char* message) {
     }
 }
 
-void display_num(uint8_t num) {
-    char *str = "000";
+void display_num(uint16_t num) {
+    char *str = "65536";
     if (num < 10) {
+        sprintf(str, "00%d", num);
+    } else if (num < 100) {
         sprintf(str, "0%d", num);
     } else {
         sprintf(str, "%d", num);
