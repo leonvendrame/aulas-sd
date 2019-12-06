@@ -27,7 +27,7 @@ void set_cursor(uint8_t row, uint8_t col);
 
 void display_str(char* message);
 
-void display_num(uint8_t num);
+void display_num(uint16_t num);
 
 void initialize_display();
 

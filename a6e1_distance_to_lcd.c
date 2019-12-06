@@ -13,8 +13,8 @@
 #define DISTANCE_SENSOR_DDR DDRB
 #define DISTANCE_SENSOR_TRIGGER PB1
 #define DISTANCE_SENSOR_ECHO PB0
-//#define SOUND_SPEED_CM_US 58
-#define COUNTER_DIVISOR_TO_US 117
+// #define SOUND_SPEED_CM_US 58
+#define COUNTER_DIVISOR_TO_US 118
 
 void setup_distance_sensor() {
     DISTANCE_SENSOR_DDR |= 1 << DISTANCE_SENSOR_TRIGGER;
@@ -48,17 +48,23 @@ int main() {
     setup_timer_counter_1();
     initialize_display();
     
-    uint16_t distance = 0;
+    volatile uint16_t distance = 0;
+    display_str("Dist.:");
 
     while (1) {
         distance = distance_in_cm();
-        set_cursor(1, 5);
-        if (distance >= 1 && distance <= 400) {
+        set_cursor(1, 8);
+        display_str("        ");
+        set_cursor(1, 8);
+        if (distance >= 2 && distance <= 400) {
             display_num(distance);
             display_str(" cm");
+        } else if (distance < 2) { 
+            display_str("<2 cm");
         } else {
-            display_str("0 cm");
+            display_str(">400 cm");
         }
+        _delay_ms(200);
     }
 
     return 0;

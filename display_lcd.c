@@ -82,14 +82,21 @@ void display_str(char* message) {
 
 void display_num(uint16_t num) {
     char *str = "65536";
-    if (num < 10) {
-        sprintf(str, "00%d", num);
-    } else if (num < 100) {
-        sprintf(str, "0%d", num);
-    } else {
-        sprintf(str, "%d", num);
-    }
+    // if (num < 10) {
+    sprintf(str, "%d", num);
+    // } else if (num < 100) {
+    //     sprintf(str, "%d", num);
+    // } else {
+    //     sprintf(str, "%d", num);
+    // }
     display_str(str);
+}
+
+void clean_half_line_display(uint8_t line, uint8_t half) {
+    if (line < 1 || line > 2) {line = 1};
+    if (half < 1 || half > 2) {half = 1};
+    set_cursor(line, ((half - 1) * 9));
+    display_str("        ");
 }
 
 void initialize_display() {
