@@ -92,12 +92,12 @@ void display_num(uint16_t num) {
     display_str(str);
 }
 
-void clean_half_line_display(uint8_t line, uint8_t half) {
-    if (line < 1 || line > 2) {line = 1};
-    if (half < 1 || half > 2) {half = 1};
-    set_cursor(line, ((half - 1) * 9));
-    display_str("        ");
-}
+// void clean_half_line_display(uint8_t line, uint8_t half) {
+//     if (line < 1 || line > 2) {line = 1};
+//     if (half < 1 || half > 2) {half = 1};
+//     set_cursor(line, ((half - 1) * 9));
+//     display_str("        ");
+// }
 
 void initialize_display() {
     _delay_ms(50);

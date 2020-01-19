@@ -16,6 +16,8 @@
 // #define SOUND_SPEED_CM_US 58
 #define COUNTER_DIVISOR_TO_US 118
 
+volatile uint8_t ignore_next_read_flag = 0;
+
 void setup_distance_sensor() {
     DISTANCE_SENSOR_DDR |= 1 << DISTANCE_SENSOR_TRIGGER;
     DISTANCE_SENSOR_DDR &= ~(1 << DISTANCE_SENSOR_ECHO);
@@ -33,8 +35,8 @@ uint16_t distance_in_cm() {
     
     while (!tst_bit(DISTANCE_SENSOR_PIN, DISTANCE_SENSOR_ECHO));
     TCNT1 = 0;
-    while (tst_bit(DISTANCE_SENSOR_PIN, DISTANCE_SENSOR_ECHO));
-
+    while (tst_bit(DISTANCE_SENSOR_PIN, DISTANCE_SENSOR_ECHO) && TCNT1 < 48000);
+    
     return TCNT1 / COUNTER_DIVISOR_TO_US;
 }
 
@@ -56,15 +58,15 @@ int main() {
         set_cursor(1, 8);
         display_str("        ");
         set_cursor(1, 8);
-        if (distance >= 2 && distance <= 400) {
+        if (distance >= 5 && distance <= 400) {
             display_num(distance);
             display_str(" cm");
-        } else if (distance < 2) { 
-            display_str("<2 cm");
+        } else if (distance < 5) { 
+            display_str("<5 cm");
         } else {
             display_str(">400 cm");
         }
-        _delay_ms(200);
+        _delay_ms(1000);
     }
 
     return 0;
