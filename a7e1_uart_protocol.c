@@ -28,11 +28,6 @@
 #define tst_bit(Y, bit_x) (Y & (1 << bit_x))
 #define cpl_bit(Y, bit_x) (Y ^= (1 << bit_x))
 
-#define _pin_port(port) (port)
-#define _pin_ddr(ddr) (ddr)
-#define pin_to_port(pin_number) (((pin_number) < 8) ? _pin_port(PORTD) : _pin_port(PORTB))
-#define pin_to_ddr(pin_number) (((pin_number) < 8) ? _pin_ddr(DDRD) : _pin_ddr(DDRB))
-
 const char LEDS_IO[] = {PB0, PB1, PB2, PB3};
 
 const char PINS_NUMBER[] = {
@@ -40,6 +35,22 @@ const char PINS_NUMBER[] = {
     PD5, PD6, PD7, PB0, PB1,
     PB2, PB3, PB4, PB5
 };
+
+volatile uint8_t *pin_to_ddr(uint8_t pin_number) {
+    if (pin_number < 8) {
+        return &DDRD;
+    } else {
+        return &DDRB;
+    }
+}
+
+volatile uint8_t *pin_to_port(uint8_t pin_number) {
+    if (pin_number < 8) {
+        return &PORTD;
+    } else {
+        return &PORTB;
+    }
+}
 
 void op_led(uint8_t target, char *operation) {
     if (target < 1 || target > 4) {
@@ -67,26 +78,26 @@ void op_pin(uint8_t target, char *operation) {
         return;
     }
     if (!strcmp(operation, OP_INPUT)) {
-        clr_bit(pin_to_ddr(target), PINS_NUMBER[target]);
+        clr_bit(*pin_to_ddr(target), PINS_NUMBER[target]);
     } else if (!strcmp(operation, OP_INPUT_PULLUP)) {
-        clr_bit(pin_to_ddr(target), PINS_NUMBER[target]);
-        set_bit(pin_to_port(target), PINS_NUMBER[target]);
+        clr_bit(*pin_to_ddr(target), PINS_NUMBER[target]);
+        set_bit(*pin_to_port(target), PINS_NUMBER[target]);
     } else if (!strcmp(operation, OP_OUTPUT)) {
-        set_bit(pin_to_ddr(target), PINS_NUMBER[target]);
+        set_bit(*pin_to_ddr(target), PINS_NUMBER[target]);
     } else if (!strcmp(operation, OP_HIGH)) {
-        set_bit(pin_to_port(target), PINS_NUMBER[target]);
+        set_bit(*pin_to_port(target), PINS_NUMBER[target]);
     } else if (!strcmp(operation, OP_LOW)) {
-        clr_bit(pin_to_port(target), PINS_NUMBER[target]);
+        clr_bit(*pin_to_port(target), PINS_NUMBER[target]);
     } else if (!strcmp(operation, OP_STATUS)) {
         char pin_status[21];
-        if (tst_bit(pin_to_ddr(target), PINS_NUMBER[target])) {
-            if (tst_bit(pin_to_port(target), PINS_NUMBER[target])) {
+        if (tst_bit(*pin_to_ddr(target), PINS_NUMBER[target])) {
+            if (tst_bit(*pin_to_port(target), PINS_NUMBER[target])) {
                 sprintf(pin_status, "PIN:%d=OUTPUT;HIGH\n", target);
             } else {
                 sprintf(pin_status, "PIN:%d=OUTPUT;LOW\n", target);
             }
         } else {
-            if (tst_bit(pin_to_port(target), PINS_NUMBER[target])) {
+            if (tst_bit(*pin_to_port(target), PINS_NUMBER[target])) {
                 sprintf(pin_status, "PIN:%d=INPUT_PULLUP\n", target);
             } else {
                 sprintf(pin_status, "PIN:%d=INPUT\n", target); 
