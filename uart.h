@@ -7,10 +7,10 @@
 
 #define BAUD 9600
 
+#include <stdio.h>
+
 void uart_init(void);
-int uart_putchar(char c);
-int uart_getchar(void);
-void getstring(char *str);
-void putstring(char *str);
+int uart_putchar(char c, FILE *stream);
+int uart_getchar(FILE *stream);
 
 #endif /* UART_H_ */

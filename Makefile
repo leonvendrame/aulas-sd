@@ -1,8 +1,8 @@
 # Nome do programa principal
-PROG = main
+PROG = a9e1_analog_temp_sensor
 
 # Defina uma variável DEPS com a lista das dependências .c (sem a extensão)
-# DEPS = display_lcd temp_sensor_dht11
+DEPS = uart ky013lib
 
 # Porta de comunicação com o Arduino
 PORT = /dev/ttyACM0
@@ -31,6 +31,7 @@ OBJS    = $(PROG).o $(DEPS:=.o)
 CC      = avr-gcc
 OBJCOPY = avr-objcopy
 CFLAGS  = $(OPTIMIZE) -I. -g -Wall -mmcu=$(MCU_TARGET) -DF_CPU=$(CPU_FREQ)
+LDFLAGS = -Wl,-u,vfprintf -lprintf_flt -lm
 ASMBLER = avra
 
 .PHONY: all install clean
@@ -41,7 +42,7 @@ test:
 	@echo $(OBJS)
 
 $(PROG).elf: $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
 $(PROG).hex: $(PROG).elf
 	$(OBJCOPY) -O ihex $< $@
