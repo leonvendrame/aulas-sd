@@ -1,11 +1,11 @@
 #define BAUD 9600
 
-#include<avr/io.h>
-#include<avr/sfr_defs.h>
-#include<util/setbaud.h>
-#include<uart.h>
-#include<stdio.h>
-#include<string.h>
+#include <avr/io.h>
+#include <avr/sfr_defs.h>
+#include <util/setbaud.h>
+#include "../libs/uartlib.h"
+#include <stdio.h>
+#include <string.h>
 
 #define TYPE_LED "LED"
 #define TYPE_PIN "PIN"

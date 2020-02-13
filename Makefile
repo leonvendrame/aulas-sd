@@ -1,8 +1,11 @@
+PROGS_DIRECTORY = activities
+LIBS_DIRECTORY = libs
+
 # Nome do programa principal
-PROG = a9e1_analog_temp_sensor
+PROG = $(PROGS_DIRECTORY)/main
 
 # Defina uma variável DEPS com a lista das dependências .c (sem a extensão)
-DEPS = uart ky013lib
+# DEPS = $(LIBS_DIRECTORY)/lib
 
 # Porta de comunicação com o Arduino
 PORT = /dev/ttyACM0
@@ -58,7 +61,8 @@ clean:
 	@rm -f $(PROG).elf $(PROG).eep.hex $(PROG).hex $(OBJS)
 
 clean_all:
-	@rm -f *.elf *.hex *.obj *.o
+	@rm -f $(PROGS_DIRECTORY)/*.elf $(PROGS_DIRECTORY)/*.hex $(PROGS_DIRECTORY)/*.obj $(PROGS_DIRECTORY)/*.o
+	@rm -f $(LIBS_DIRECTORY)/*.elf $(LIBS_DIRECTORY)/*.hex $(LIBS_DIRECTORY)/*.obj $(LIBS_DIRECTORY)/*.o
 
 assembler:
 	$(ASMBLER) $(PROG).asm

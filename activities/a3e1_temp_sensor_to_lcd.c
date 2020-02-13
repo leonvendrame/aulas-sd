@@ -1,7 +1,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
-#include <display_lcd.h>
-#include <temp_sensor_dht11.h>
+#include "../libs/displaylcdlib.h"
+#include "../libs/dht11lib.h"
 
 int main() {
     uint8_t temps[5];

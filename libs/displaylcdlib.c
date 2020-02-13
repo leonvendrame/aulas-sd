@@ -1,5 +1,5 @@
 #include <util/delay.h>
-#include <display_lcd.h>
+#include "displaylcdlib.h"
 #include <stdio.h>
 #define set_bit(Y, bit_x) (Y |= (1 << bit_x))
 #define clr_bit(Y, bit_x) (Y &= ~(1 << bit_x))

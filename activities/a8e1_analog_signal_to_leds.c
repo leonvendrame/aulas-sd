@@ -1,6 +1,6 @@
-#include<avr/io.h>
-#include<util/delay.h>
-#include<adclib.h>
+#include <avr/io.h>
+#include <util/delay.h>
+#include "../libs/adclib.h"
 
 #define LED0 PD7
 #define LED1 PD6

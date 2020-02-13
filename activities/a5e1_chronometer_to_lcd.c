@@ -1,6 +1,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
-#include <display_lcd.h>
+#include "../libs/displaylcdlib.h"
 #include <avr/interrupt.h>
 
 #define set_bit(Y, bit_x) (Y |= (1 << bit_x))

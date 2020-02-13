@@ -1,8 +1,8 @@
-#include<avr/io.h>
-#include<util/delay.h>
-#include<ky013lib.h>
-#include<uart.h>
-#include<stdio.h>
+#include <avr/io.h>
+#include <util/delay.h>
+#include "../libs/ky013lib.h"
+#include "../libs/uart.h"
+#include <stdio.h>
 
 #define set_bit(Y, bit_x) (Y |= (1 << bit_x))
 #define clr_bit(Y, bit_x) (Y &= ~(1 << bit_x))

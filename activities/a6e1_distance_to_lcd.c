@@ -1,7 +1,7 @@
-#include<avr/io.h>
-#include<util/delay.h>
-#include<avr/interrupt.h>
-#include<display_lcd.h>
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
+#include "../libs/displaylcdlib.h"
 
 #define set_bit(Y, bit_x) (Y |= (1 << bit_x))
 #define clr_bit(Y, bit_x) (Y &= ~(1 << bit_x))
